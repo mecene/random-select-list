@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Vocabulaire des loisirs</title>
+    <style>
+        /* Styling for the button */
+        .big-button {
+            background-color: red;
+            box-shadow: 0px 4px 4px darkred;
+            color: white;
+            padding: 20px 40px;
+            font-size: 24px;
+            border: none;
+            cursor: pointer;
+            border-radius: 23px;
+
+        }
+        .big-button:hover{
+            background-color: rgb(173, 7, 7);
+            box-shadow: 0px 4px 4px darkred;
+        }
+
+        .center {
+            width: 147px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            /* bring your own prefixes */
+            transform: translate(-50%, -50%);
+        }
+        #randomText{
+            font-size:100px;
+            text-align: center;
+            font-family: sans-serif;
+            
+        }
+    </style>
+</head>
+
+<body>
+    <div class="center">
+        <button class="big-button" id="selectButton">click</button>
+        
+    </div>
+    <p id="randomText"> - - - - - - </p>
+
+    <script>
+        // Array of your items
+        const items = [
+  "Loisirs",
+  "Bonheur",
+  "Bien-être",
+  "Se détendre",
+  "Passe-temps",
+  "Géographique",
+  "Saisons",
+  "Stress",
+  "Goût",
+  "Faciles d'accès",
+  "Coût",
+  "Permettre",
+  "Néanmoins",
+  "Sportifs",
+  "Également",
+  "le Maurice",
+  "Plongée sous-marine",
+  "Choisir",
+  "Dicte",
+  "Humeur",
+  "Tendance",
+  "Se Réjouir",
+  "Vélo",
+  "Promenade",
+  "Préfère",
+  "Visiter",
+  "Musées",
+  "Expositions",
+  "Apprécier",
+  "Culturels",
+  "Divertissements",
+  "Intellectuel",
+  "Intérêt",
+  "Apprendre",
+  "Nouveau",
+  "Garder",
+  "Esprit",
+  "Ouvert",
+  "Variété",
+  "Instructifs",
+  "Scientifiques",
+  "Technologies",
+  "Utiles",
+  "Bricolage",
+  "Jardinage",
+  "Économiser",
+  "Lampe",
+  "Réparer",
+  "Agréable",
+  "Passer du temp",
+  "Rire",
+  "Laisser",
+  "Commentaires",
+  "La pluie"
+];
+
+
+        // Function to select and display a random item
+        function selectRandomItem() {
+            const randomIndex = Math.floor(Math.random() * items.length);
+            const randomItem = items[randomIndex];
+            document.getElementById("randomText").textContent = randomItem;
+            disableButton()
+        }
+        // Function to disable button
+        function disableButton() {
+	     const btn = document.getElementById("selectButton");
+		 btn.disabled = true;
+		 btn.textContent = "wait";
+         btn.style.opacity = "0.2";
+         setTimeout(function() {
+            btn.disabled = false;
+            btn.textContent = "click";
+            btn.style.opacity = "1";
+
+    },3000);
+	  }
+
+        // Add a click event listener to the button
+        document.getElementById("selectButton").addEventListener("click", selectRandomItem);
+    </script>
+</body>
+
+</html>
