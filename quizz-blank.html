@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QUIZZ</title>
+</head>
+<body>
+    <div id="question"></div>
+    
+    <script>
+        const quizQuestion = {
+        question: "What is the capital of France?",
+        answers: [
+            { text: "London", isCorrect: false },
+            { text: "Berlin", isCorrect: false },
+            { text: "Paris", isCorrect: true }
+        ]
+        };
+
+        console.log(quizQuestion.question);
+        console.log("1. " + quizQuestion.answers[0].text);
+        console.log("2. " + quizQuestion.answers[1].text);
+        console.log("3. " + quizQuestion.answers[2].text);
+    </script>
+</body>
+
+</html>
