@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Vocab: Repas</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Creepster&display=swap');
+        /* Styling for the button */
+        .big-button {
+            background-color: #6174b7;
+            box-shadow: 0px 4px 4px #0a194c;
+            color: white;
+            padding: 20px 40px;
+            font-size: 24px;
+            border: none;
+            cursor: pointer;
+            border-radius: 23px;
+
+        }
+
+        .big-button:hover {
+            background-color: rgb(173, 7, 7);
+            box-shadow: 0px 4px 4px darkred;
+        }
+
+        .center {
+            width: 147px;
+            position: fixed;
+            bottom: 10%;
+            left: 50%;
+            /* bring your own prefixes */
+            transform: translate(-50%, -50%);
+        }
+
+        #randomText {
+            font-size: 100px;
+            text-align: center;
+            font-family: sans-serif;
+            background: #ffffffaa;
+
+        }
+
+        #solution {
+            background-color: beige;
+            position: absolute;
+            bottom: 10%;
+            right: -10px;
+            min-width: 220px;
+            border: 2px solid #aeaeae;
+            padding: 30px;
+            -webkit-border-radius: 20px;
+            -webkit-border-bottom-right-radius: 0;
+            -moz-border-radius: 20px;
+            -moz-border-radius-bottomright: 0;
+            border-radius: 20px;
+            border-bottom-right-radius: 0;
+            display: none;
+        }
+
+        .flags {
+            font-size: 4em;
+        }
+
+        .flags span:first-child {
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: none;
+        }
+
+        .flags span:last-child {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: none;
+        }
+
+        .avatar {
+            position: absolute;
+            cursor: pointer;
+            right: 100px;
+            bottom: 14%;
+        }
+
+        .avatar img {
+            position: absolute;
+            width: 80px;
+        }
+
+        .avatar:hover :nth-child(2) {
+
+            display: none;
+        }
+
+        body {
+            /* background-image:  ;
+            background-position: 0px 250px;
+            background-repeat: no-repeat, repeat;
+            background-size:cover; */
+        }
+
+        .output {
+            text-align: center;
+            display: none;
+        }
+        .gifsbtn{
+            position: absolute;
+            left: 10px;
+            bottom: 10px;
+        }
+        .circle {
+            width: 50px;
+            height: 50px;
+            background-color: blue;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;background-clip: content-box;
+            font-family: Arial, sans-serif;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+
+<body>
+    <label class="switch switch-slide" style="font-family: Creepster; display: block; text-align: center;">
+        <input class="switch-input" type="checkbox" id="hardcore" />
+        <span class="switch-label" data-on="Yes" data-off="No"></span> 
+        <span class="hardcore">Hardcore mode</span>
+    </label>
+
+    <div class="center">
+        <button class="big-button" id="selectButton">click</button>
+    </div>
+    <p id="randomText"> - - - - - - </p>
+
+    <div class="flags">
+        <span id="flag-fr">🇫🇷</span>
+        <span id="flag-uk">🇬🇧</span>
+    </div>
+    <div class="avatar" id="response">
+        <img
+            src='https://avataaars.io/?avatarStyle=Circle&topType=ShortHairShortWaved&accessoriesType=Prescription02&hairColor=Auburn&facialHairType=BeardLight&facialHairColor=Auburn&clotheType=CollarSweater&clotheColor=Heather&eyeType=Squint&eyebrowType=RaisedExcited&mouthType=Sad&skinColor=Pale' />
+        <img
+            src='https://avataaars.io/?avatarStyle=Circle&topType=ShortHairShortWaved&accessoriesType=Prescription02&hairColor=Auburn&facialHairType=BeardLight&facialHairColor=Auburn&clotheType=CollarSweater&clotheColor=Heather&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Twinkle&skinColor=Light' />
+        <p id="solution"></p>
+    </div>
+    <div class="output" id="gifs"></div>
+    </div>
+    <button class="gifsbtn" onclick="myFunction()">GIFS</button>
+    <!-- cirlces score-->
+    <!-- <div class="circle" onclick="expandCircle('Sara', 'blue')">Sara</div>
+    <div class="circle" onclick="expandCircle('Uygar', 'green')">Uygar</div>
+    <div class="circle" onclick="expandCircle('Lucija', 'orange')">Lucija</div>
+    <div class="circle" onclick="expandCircle('Edourado', 'pink')">Edourado</div>
+    <div class="circle" onclick="expandCircle('Mila', 'yellow')">Mila</div> -->
+    <script>
+
+        // Array of your items
+let items = {
+  '______  restaurant propose une cuisine délicieuse': 'Ce',
+  '______  artiste crée des œuvres originales': 'Cet',
+  '______  fleurs égayent le jardin': 'Ces',
+  '______  ville est pleine d\'histoire': 'Cette',
+  '______  élève a obtenu de bonnes notes': 'Cet',
+  '______  chaises sont confortables': 'Ces',
+  '______  film est plein de suspense': 'Ce',
+  '______  musique est apaisante': 'Cette',
+  '______  étoiles brillent dans le ciel': 'Ces',
+  '______  cours est très instructif': 'Ce',
+  '______  ordinateur est rapide et efficace': 'Cet',
+  '______  enfants sont très créatifs': 'Ces',
+  '______  robe est élégante': 'Cette',
+  '______  plat est délicieux, essayez-le!': 'Ce',
+  '______  montagnes offrent une vue magnifique': 'Ces',
+  '______  plage est magnifique au coucher du soleil': 'Cette',
+  '______  livres sont passionnants à lire': 'Ces',
+  '______  appartement est spacieux': 'Cet',
+  '______  arbres fournissent de l\'ombre agréable': 'Ces',
+  '______  musée abrite des trésors historiques': 'Ce',
+  '______  voiture est écologique': 'Cette',
+  '______  oiseaux chantent mélodieusement': 'Ces',
+  '______  café propose des boissons exquises': 'Ce',
+  '______  amis sont très sympathiques': 'Ces',
+  '______  fête était amusante': 'Cette',
+  '______  collines sont recouvertes de verdure': 'Ces',
+  '______  instrument produit un son harmonieux': 'Cet',
+  '______  pâtisseries sont délicieuses': 'Ces',
+  '______  marché vend des produits locaux': 'Ce',
+  '______  bâtiments sont modernes et impressionnants': 'Ces'
+};
+
+let itemsHardcore = {
+    'na': 'na'
+
+};
+
+        // console.log(Object.entries(items)[50])
+        // console.log(Object.keys(items).length)
+        let itemToDelete;
+
+        const textBox = document.getElementById("randomText");
+        const solution = document.getElementById("solution");
+        const flagFr = document.getElementById("flag-fr");
+        const flagUk = document.getElementById("flag-uk");
+        const avatar = document.getElementById("response");
+        const hardcore = document.querySelector('#hardcore');
+
+        let checkChange = hardcore.addEventListener("change", hardcoreLevel)
+
+        function hardcoreLevel(){
+            console.log(hardcore.checked);
+            if(hardcore.checked){
+                items = itemsHardcore
+                document.body.style.backgroundBlendMode = "difference";
+                document.body.style.backgroundColor = 'darkslateblue';
+            }else{
+                items = items
+                document.body.style.backgroundBlendMode = "normal";
+                document.body.style.backgroundColor = 'white';
+            }
+        }
+        hardcore
+        // Function to select and display a random item
+        function selectRandomItem() {
+            
+            console.log(Object.keys(items).length)
+            console.log(itemToDelete);
+            const randomIndex = Math.floor(Math.random() * Object.keys(items).length);
+            //console.log(randomIndex);
+            const randomLanguage = (Math.random() >= 0.5) ? 1 : 0;
+            randomLanguage == 0
+                ? (
+                    textBox.style.color = "blue",
+                    flagFr.style.display = "block",
+                    flagUk.style.display = "none"
+
+                ) : (
+                    textBox.style.color = "black",
+                    flagFr.style.display = "none",
+                    flagUk.style.display = "block"
+                );
+            const randomItem = Object.entries(items)[randomIndex][randomLanguage];
+            itemToDelete = Object.entries(items)[randomIndex];
+            //console.log(randomLanguage);
+
+            textBox.textContent = randomItem;
+            solution.textContent = Object.entries(items)[randomIndex][(randomLanguage == 0 ? 1 : 0)]
+            disableButton()
+            clearOutput()
+            getData(Object.entries(items)[randomIndex][randomLanguage == 0 ? 1 : 1])
+            delete items[itemToDelete[0]];
+        }
+        // Function to disable button
+        function disableButton() {
+            const btn = document.getElementById("selectButton");
+            btn.disabled = true;
+            btn.textContent = "wait";
+            btn.style.opacity = "0.2";
+            setTimeout(function () {
+                btn.disabled = false;
+                btn.textContent = "click";
+                btn.style.opacity = "1";
+
+            }, 500);
+            // setTimeout(function(){
+
+            // },3000)
+        }
+
+        function displaySolution() {
+            solution.style.display = "block";
+            setTimeout(function () {
+                solution.style.display = "none";
+            }, 3000)
+        }
+
+        // Add a click event listener to the button
+        document.getElementById("selectButton").addEventListener("click", selectRandomItem);
+        avatar.addEventListener("click", displaySolution);
+
+        //gyphy stuff
+
+        /*Get data from the API*/
+        function getData(input) {
+            var API_KEY = "aIFzHd5n7j7I4zPMQ6Ce8iNkYxsBlGqW";
+            var url =
+                "https://api.giphy.com/v1/gifs/search?api_key=" +
+                API_KEY +
+                "&q=" +
+                input +
+                "&limit=1&offset=0&rating=pg&lang=en&bundle=sticker_layering"; 
+            fetch(url)
+                .then((response) => response.json())
+                .then((data) => showData(data.data))
+                .catch((e) => {
+                    console.log(e);
+                });
+        }
+        /*Display the output*/
+        function showData(data) {
+            data.forEach((element) => {
+                var src = element.images.fixed_height.url;
+                var output = document.querySelector(".output");
+                output.innerHTML += "<img src=" + src + " >";
+            });
+        }
+        /*clearing the ouptut*/
+        function clearOutput() {
+            var output = document.querySelector(".output");
+            output.innerHTML = "";
+        }
+        function myFunction() {
+            var x = document.getElementById("gifs");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+        //circles score
+        let size = 50;
+
+        // function expandCircle(name, color) {
+        //     let circle = document.querySelector('.circle');
+        //     size += 10;
+        //     circle.style.width = size + 'px';
+        //     circle.style.height = size + 'px';
+        //     circle.style.borderRadius = size / 2 + 'px';
+        //     circle.style.backgroundColor = color;
+        //     circle.textContent = name;
+        // }
+
+        
+    </script>
+</body>
+
+</html>

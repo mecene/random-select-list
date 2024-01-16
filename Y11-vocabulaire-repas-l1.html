@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Vocab: Repas</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Creepster&display=swap');
+        /* Styling for the button */
+        .big-button {
+            background-color: #6174b7;
+            box-shadow: 0px 4px 4px #0a194c;
+            color: white;
+            padding: 20px 40px;
+            font-size: 24px;
+            border: none;
+            cursor: pointer;
+            border-radius: 23px;
+
+        }
+
+        .big-button:hover {
+            background-color: rgb(173, 7, 7);
+            box-shadow: 0px 4px 4px darkred;
+        }
+
+        .center {
+            width: 147px;
+            position: fixed;
+            bottom: 10%;
+            left: 50%;
+            /* bring your own prefixes */
+            transform: translate(-50%, -50%);
+        }
+
+        #randomText {
+            font-size: 100px;
+            text-align: center;
+            font-family: sans-serif;
+            background: #ffffffaa;
+
+        }
+
+        #solution {
+            background-color: beige;
+            position: absolute;
+            bottom: 10%;
+            right: -10px;
+            min-width: 220px;
+            border: 2px solid #aeaeae;
+            padding: 30px;
+            -webkit-border-radius: 20px;
+            -webkit-border-bottom-right-radius: 0;
+            -moz-border-radius: 20px;
+            -moz-border-radius-bottomright: 0;
+            border-radius: 20px;
+            border-bottom-right-radius: 0;
+            display: none;
+        }
+
+        .flags {
+            font-size: 4em;
+        }
+
+        .flags span:first-child {
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: none;
+        }
+
+        .flags span:last-child {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: none;
+        }
+
+        .avatar {
+            position: absolute;
+            cursor: pointer;
+            right: 100px;
+            bottom: 14%;
+        }
+
+        .avatar img {
+            position: absolute;
+            width: 80px;
+        }
+
+        .avatar:hover :nth-child(2) {
+
+            display: none;
+        }
+
+        body {
+            background-image:  url("https://freepngimg.com/thumb/vegetable/9-2-vegetable-free-download-png.png"), url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.dev/svgjs' width='1440' height='560' preserveAspectRatio='none' viewBox='0 0 1440 560'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1005%26quot%3b)' fill='none'%3e%3crect width='1440' height='560' x='0' y='0' fill='rgba(255%2c 185%2c 150%2c 1)'%3e%3c/rect%3e%3cpath d='M205.9752831353002 474.30240152057024L112.59089344209296 384.12214465163066 22.41063657315337 477.5065343448379 115.79502626636062 567.6867912137775z' fill='rgba(84%2c 141%2c 203%2c 0.4)' class='triangle-float1'%3e%3c/path%3e%3cpath d='M-40.52527803035941 181.5611358466394L-64.3876837427313 270.6168463560331 81.12708487754523 261.8825996698941z' fill='rgba(84%2c 141%2c 203%2c 0.4)' class='triangle-float2'%3e%3c/path%3e%3cpath d='M1205.3908092105642 14.456212471822738L1147.7385128152996 80.77759284867693 1271.7121895874184 72.10850886708741z' fill='rgba(84%2c 141%2c 203%2c 0.4)' class='triangle-float3'%3e%3c/path%3e%3cpath d='M1274.5800813865371 208.02895746350265L1380.3590433475968 141.93092605725386 1314.261011941348 36.15196409619415 1208.4820499802884 102.24999550244293z' fill='rgba(84%2c 141%2c 203%2c 0.4)' class='triangle-float3'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1005'%3e%3crect width='1440' height='560' fill='white'%3e%3c/rect%3e%3c/mask%3e%3cstyle%3e %40keyframes float1 %7b 0%25%7btransform: translate(0%2c 0)%7d 50%25%7btransform: translate(-10px%2c 0)%7d 100%25%7btransform: translate(0%2c 0)%7d %7d .triangle-float1 %7b animation: float1 5s infinite%3b %7d %40keyframes float2 %7b 0%25%7btransform: translate(0%2c 0)%7d 50%25%7btransform: translate(-5px%2c -5px)%7d 100%25%7btransform: translate(0%2c 0)%7d %7d .triangle-float2 %7b animation: float2 4s infinite%3b %7d %40keyframes float3 %7b 0%25%7btransform: translate(0%2c 0)%7d 50%25%7btransform: translate(0%2c -10px)%7d 100%25%7btransform: translate(0%2c 0)%7d %7d .triangle-float3 %7b animation: float3 6s infinite%3b %7d %3c/style%3e%3c/defs%3e%3c/svg%3e");
+            background-position: 0px 250px;
+            background-repeat: no-repeat, repeat;
+            background-size:cover;
+        }
+
+        .output {
+            text-align: center;
+            display: none;
+        }
+        .gifsbtn{
+            position: absolute;
+            left: 10px;
+            bottom: 10px;
+        }
+        .circle {
+            width: 50px;
+            height: 50px;
+            background-color: blue;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;background-clip: content-box;
+            font-family: Arial, sans-serif;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+
+<body>
+    <label class="switch switch-slide" style="font-family: Creepster; display: block; text-align: center;">
+        <input class="switch-input" type="checkbox" id="hardcore" />
+        <span class="switch-label" data-on="Yes" data-off="No"></span> 
+        <span class="hardcore">Hardcore mode</span>
+    </label>
+
+    <div class="center">
+        <button class="big-button" id="selectButton">click</button>
+    </div>
+    <p id="randomText"> - - - - - - </p>
+
+    <div class="flags">
+        <span id="flag-fr">🇫🇷</span>
+        <span id="flag-uk">🇬🇧</span>
+    </div>
+    <div class="avatar" id="response">
+        <img
+            src='https://avataaars.io/?avatarStyle=Circle&topType=ShortHairShortWaved&accessoriesType=Prescription02&hairColor=Auburn&facialHairType=BeardLight&facialHairColor=Auburn&clotheType=CollarSweater&clotheColor=Heather&eyeType=Squint&eyebrowType=RaisedExcited&mouthType=Sad&skinColor=Pale' />
+        <img
+            src='https://avataaars.io/?avatarStyle=Circle&topType=ShortHairShortWaved&accessoriesType=Prescription02&hairColor=Auburn&facialHairType=BeardLight&facialHairColor=Auburn&clotheType=CollarSweater&clotheColor=Heather&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Twinkle&skinColor=Light' />
+        <p id="solution"></p>
+    </div>
+    <div class="output" id="gifs"></div>
+    </div>
+    <button class="gifsbtn" onclick="myFunction()">GIFS</button>
+    <!-- cirlces score-->
+    <!-- <div class="circle" onclick="expandCircle('Sara', 'blue')">Sara</div>
+    <div class="circle" onclick="expandCircle('Uygar', 'green')">Uygar</div>
+    <div class="circle" onclick="expandCircle('Lucija', 'orange')">Lucija</div>
+    <div class="circle" onclick="expandCircle('Edourado', 'pink')">Edourado</div>
+    <div class="circle" onclick="expandCircle('Mila', 'yellow')">Mila</div> -->
+    <script>
+
+        // Array of your items
+let items = {
+    'viande': 'meat',
+    'avaler': 'to swallow',
+    'boire': 'to drink',
+    'aliment': 'food',
+    'alimentation': 'diet/nutrition',
+    'boisson': 'beverage/drink',
+    'calorie': 'calorie',
+    'assiette': 'plate',
+    'consommer': 'to consume',
+    'céréale': 'cereal',
+    'bouteille': 'bottle',
+    'fourchette': 'fork',
+    'cuillère': 'spoon',
+    'couteau': 'knife',
+    'plat': 'dish',
+    'dessert': 'dessert',
+    'fruit': 'fruit',
+    'acide': 'sour',
+    'aigre': 'bitter',
+    'délicieux': 'delicious',
+    'doux': 'sweet',
+    'épicé': 'spicy',
+    'fade': 'bland',
+    'goûteux': 'flavorful / tasty',
+    'gras': 'fatty',
+    'juteux': 'juicy',
+    'maigre': 'lean',
+    'malsain': 'unhealthy',
+    'nutritif': 'nutritious',
+    'couper': 'to cut',
+    'cuisiner': 'to cook',
+    'cuire': 'to bake/to cook',
+    'découper': 'to carve',
+    'déguster': 'to taste/enjoy',
+    'mâcher': 'to chew',
+    'verre': 'glass',
+    'graine': 'seed',
+    'légume': 'vegetable',
+    'nourriture': 'food',
+    'manger': 'to eat',
+    'préparer': 'to prepare',
+    'servir': 'to serve',
+    'kilo': 'kilogram',
+    'litre': 'liter',
+    'gras': 'fat',
+    'sucre': 'sugar',
+    'sel': 'salt',
+    'poivre': 'pepper',
+    'vitamines': 'vitamins',
+    'sain': 'healthy',
+    'nutrition': 'nutrition',
+    'pâtisserie': 'pastry',
+    'produit_laitier': 'dairy product',
+    'protéine': 'protein',
+    'recette': 'recipe',
+    'régime': 'diet'
+};
+
+let itemsHardcore = {
+    "J'aime manger de la viande": 'I like to eat meat',
+    'Il a avalé une mouche': 'he swallowed a fly ',
+    'Boire trop de café est mauvais pour la santé': 'Drinking too much cofee is unhealthy',
+    "La farine est un aliment de base": 'Flour is a staple food',
+    'Une bonne alimentation': 'A good diet',
+    'TU veux une boisson': 'Do you want a drink',
+    'Le beurre est riche en calories': 'Butter is high in calories',
+    'Il a posé son assiette sur la table.': 'He put his plate on the table.',
+    'Il est important de consommer des légumes tous les jours.': 'It is important to consume vegetables every day.',
+    'Les céréales sont un bon choix pour le petit-déjeuner.': 'Cereals are a good choice for breakfast.',
+    'J\'ai acheté une bouteille d\'eau au magasin.': 'I bought a bottle of water at the store.',
+    'Elle utilise une fourchette pour manger la salade.': 'She uses a fork to eat the salad.',
+    'Prends une cuillère pour remuer le café.': 'Take a spoon to stir the coffee.',
+    'Le chef utilise un couteau pour couper les légumes.': 'The chef uses a knife to cut the vegetables.',
+    'Ce restaurant propose un plat de pâtes délicieux.': 'This restaurant offers a delicious pasta dish.',
+    'Le gâteau au chocolat est mon dessert préféré.': 'The chocolate cake is my favorite dessert.',
+    'Je mange un fruit chaque matin pour le petit-déjeuner.': 'I eat a fruit every morning for breakfast.',
+    'Le citron a un goût acide.': 'The lemon has a sour taste.',
+    'Le lait a tourné et a un goût aigre.': 'The milk has turned and has a bitter taste.',
+    'Ce gâteau au fromage est délicieux.': 'This cheesecake is delicious.',
+    'Les bonbons sont souvent sucrés.': 'Candies are often sweet.',
+    'J\'aime les plats épicés.': 'I like spicy dishes.',
+    'Ce plat est un peu fade.': 'This dish is a bit bland.',
+    'Ce plat est très goûteux.': 'This dish is very flavorful / tasty.',
+    'Les frites sont riches en gras.': 'French fries are high in fat.',
+    'Les oranges sont juteuses et rafraîchissantes.': 'Oranges are juicy and refreshing.',
+    'Le poulet est une viande maigre.': 'Chicken is a lean meat.',
+    'Manger trop de sucreries peut être malsain.': 'Eating too many sweets can be unhealthy.',
+    'Les légumes verts sont très nutritifs.': 'Green vegetables are very nutritious.',
+    'Il faut couper les légumes avant de les cuisiner.': 'You need to cut the vegetables before cooking them.',
+    'Ma grand-mère aime cuisiner de bons plats traditionnels.': 'My grandmother likes to cook good traditional dishes.',
+    'Je vais cuire un gâteau pour l\'anniversaire.': 'I am going to bake a cake for the birthday.',
+    'Le boucher va découper la viande en tranches.': 'The butcher is going to carve the meat into slices.',
+    'J\'aime déguster un bon vin avec mon repas.': 'I enjoy tasting a good wine with my meal.',
+    'Il faut bien mâcher les aliments pour une bonne digestion.': 'You need to chew food well for good digestion.',
+    'J\'ai bu de l\'eau dans un verre en cristal.': 'I drank water in a crystal glass.',
+    'Les graines de tournesol sont une collation saine.': 'Sunflower seeds are a healthy snack.',
+    'Les légumes sont une source importante de vitamines.': 'Vegetables are an important source of vitamins.',
+    'La nourriture est excellente dans ce restaurant.': 'The food is excellent in this restaurant.',
+    'Il est essentiel de bien manger pour rester en bonne santé.': 'It is essential to eat well to stay healthy.',
+    'Je vais préparer une salade pour le déjeuner.': 'I am going to prepare a salad for lunch.',
+    'Elle va servir le dîner à sept heures.': 'She will serve dinner at seven o\'clock.',
+    'J\'ai acheté un kilo de pommes au marché.': 'I bought a kilogram of apples at the market.',
+    'J\'ai bu un litre d\'eau pendant mon entraînement.': 'I drank a liter of water during my workout.',
+    'Je ne mange pas trop de sucre pour rester en bonne santé.': 'I don\'t eat too much sugar to stay healthy.',
+    'N\'ajoute pas trop de sel à la soupe.': 'Don\'t add too much salt to the soup.',
+    'Il a saupoudré du poivre sur sa salade.': 'He sprinkled some pepper on his salad.',
+    'Les fruits sont riches en vitamines.': 'Fruits are rich in vitamins.',
+    'Il est important de mener un mode de vie sain.': 'It is important to lead a healthy lifestyle.',
+    'La nutrition joue un rôle essentiel pour la santé.': 'Nutrition plays an essential role in health.',
+    'La pâtisserie vend de délicieux croissants.': 'The bakery sells delicious croissants.',
+    'Les produits laitiers sont riches en calcium.': 'Dairy products are rich in calcium.',
+    'Les œufs sont une bonne source de protéines.': 'Eggs are a good source of protein.',
+    'Je vais suivre une recette pour faire un gâteau.': 'I am going to follow a recipe to make a cake.',
+    'Il suit un régime strict pour perdre du poids.': 'He is following a strict diet to lose weight.'
+
+};
+
+        // console.log(Object.entries(items)[50])
+        // console.log(Object.keys(items).length)
+        let itemToDelete;
+
+        const textBox = document.getElementById("randomText");
+        const solution = document.getElementById("solution");
+        const flagFr = document.getElementById("flag-fr");
+        const flagUk = document.getElementById("flag-uk");
+        const avatar = document.getElementById("response");
+        const hardcore = document.querySelector('#hardcore');
+
+        let checkChange = hardcore.addEventListener("change", hardcoreLevel)
+
+        function hardcoreLevel(){
+            console.log(hardcore.checked);
+            if(hardcore.checked){
+                items = itemsHardcore
+                document.body.style.backgroundBlendMode = "difference";
+                document.body.style.backgroundColor = 'darkslateblue';
+            }else{
+                items = items
+                document.body.style.backgroundBlendMode = "normal";
+                document.body.style.backgroundColor = 'white';
+            }
+        }
+        hardcore
+        // Function to select and display a random item
+        function selectRandomItem() {
+            
+            console.log(Object.keys(items).length)
+            console.log(itemToDelete);
+            const randomIndex = Math.floor(Math.random() * Object.keys(items).length);
+            //console.log(randomIndex);
+            const randomLanguage = (Math.random() >= 0.5) ? 1 : 0;
+            randomLanguage == 0
+                ? (
+                    textBox.style.color = "blue",
+                    flagFr.style.display = "block",
+                    flagUk.style.display = "none"
+
+                ) : (
+                    textBox.style.color = "black",
+                    flagFr.style.display = "none",
+                    flagUk.style.display = "block"
+                );
+            const randomItem = Object.entries(items)[randomIndex][randomLanguage];
+            itemToDelete = Object.entries(items)[randomIndex];
+            //console.log(randomLanguage);
+
+            textBox.textContent = randomItem;
+            solution.textContent = Object.entries(items)[randomIndex][(randomLanguage == 0 ? 1 : 0)]
+            disableButton()
+            clearOutput()
+            getData(Object.entries(items)[randomIndex][randomLanguage == 0 ? 1 : 1])
+            delete items[itemToDelete[0]];
+        }
+        // Function to disable button
+        function disableButton() {
+            const btn = document.getElementById("selectButton");
+            btn.disabled = true;
+            btn.textContent = "wait";
+            btn.style.opacity = "0.2";
+            setTimeout(function () {
+                btn.disabled = false;
+                btn.textContent = "click";
+                btn.style.opacity = "1";
+
+            }, 500);
+            // setTimeout(function(){
+
+            // },3000)
+        }
+
+        function displaySolution() {
+            solution.style.display = "block";
+            setTimeout(function () {
+                solution.style.display = "none";
+            }, 3000)
+        }
+
+        // Add a click event listener to the button
+        document.getElementById("selectButton").addEventListener("click", selectRandomItem);
+        avatar.addEventListener("click", displaySolution);
+
+        //gyphy stuff
+
+        /*Get data from the API*/
+        function getData(input) {
+            var API_KEY = "aIFzHd5n7j7I4zPMQ6Ce8iNkYxsBlGqW";
+            var url =
+                "https://api.giphy.com/v1/gifs/search?api_key=" +
+                API_KEY +
+                "&q=" +
+                input +
+                "&limit=1&offset=0&rating=pg&lang=en&bundle=sticker_layering"; 
+            fetch(url)
+                .then((response) => response.json())
+                .then((data) => showData(data.data))
+                .catch((e) => {
+                    console.log(e);
+                });
+        }
+        /*Display the output*/
+        function showData(data) {
+            data.forEach((element) => {
+                var src = element.images.fixed_height.url;
+                var output = document.querySelector(".output");
+                output.innerHTML += "<img src=" + src + " >";
+            });
+        }
+        /*clearing the ouptut*/
+        function clearOutput() {
+            var output = document.querySelector(".output");
+            output.innerHTML = "";
+        }
+        function myFunction() {
+            var x = document.getElementById("gifs");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+        //circles score
+        let size = 50;
+
+        // function expandCircle(name, color) {
+        //     let circle = document.querySelector('.circle');
+        //     size += 10;
+        //     circle.style.width = size + 'px';
+        //     circle.style.height = size + 'px';
+        //     circle.style.borderRadius = size / 2 + 'px';
+        //     circle.style.backgroundColor = color;
+        //     circle.textContent = name;
+        // }
+
+        
+    </script>
+</body>
+
+</html>
