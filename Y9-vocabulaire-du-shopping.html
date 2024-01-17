@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Vocab: Repas</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Creepster&display=swap');
+        /* Styling for the button */
+        .big-button {
+            background-color: #6174b7;
+            box-shadow: 0px 4px 4px #0a194c;
+            color: white;
+            padding: 20px 40px;
+            font-size: 24px;
+            border: none;
+            cursor: pointer;
+            border-radius: 23px;
+
+        }
+
+        .big-button:hover {
+            background-color: rgb(173, 7, 7);
+            box-shadow: 0px 4px 4px darkred;
+        }
+
+        .center {
+            width: 147px;
+            position: fixed;
+            bottom: 10%;
+            left: 50%;
+            /* bring your own prefixes */
+            transform: translate(-50%, -50%);
+        }
+
+        #randomText {
+            font-size: 100px;
+            text-align: center;
+            font-family: sans-serif;
+            background: #ffffffaa;
+
+        }
+
+        #solution {
+            background-color: beige;
+            position: absolute;
+            bottom: 10%;
+            right: -10px;
+            min-width: 220px;
+            border: 2px solid #aeaeae;
+            padding: 30px;
+            -webkit-border-radius: 20px;
+            -webkit-border-bottom-right-radius: 0;
+            -moz-border-radius: 20px;
+            -moz-border-radius-bottomright: 0;
+            border-radius: 20px;
+            border-bottom-right-radius: 0;
+            display: none;
+        }
+
+        .flags {
+            font-size: 4em;
+        }
+
+        .flags span:first-child {
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: none;
+        }
+
+        .flags span:last-child {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: none;
+        }
+
+        .avatar {
+            position: absolute;
+            cursor: pointer;
+            right: 100px;
+            bottom: 14%;
+        }
+
+        .avatar img {
+            position: absolute;
+            width: 80px;
+        }
+
+        .avatar:hover :nth-child(2) {
+
+            display: none;
+        }
+
+        body {
+            background-image:  url("https://freepngimg.com/thumb/vegetable/9-2-vegetable-free-download-png.png"), url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.dev/svgjs' width='1440' height='560' preserveAspectRatio='none' viewBox='0 0 1440 560'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1005%26quot%3b)' fill='none'%3e%3crect width='1440' height='560' x='0' y='0' fill='rgba(255%2c 185%2c 150%2c 1)'%3e%3c/rect%3e%3cpath d='M205.9752831353002 474.30240152057024L112.59089344209296 384.12214465163066 22.41063657315337 477.5065343448379 115.79502626636062 567.6867912137775z' fill='rgba(84%2c 141%2c 203%2c 0.4)' class='triangle-float1'%3e%3c/path%3e%3cpath d='M-40.52527803035941 181.5611358466394L-64.3876837427313 270.6168463560331 81.12708487754523 261.8825996698941z' fill='rgba(84%2c 141%2c 203%2c 0.4)' class='triangle-float2'%3e%3c/path%3e%3cpath d='M1205.3908092105642 14.456212471822738L1147.7385128152996 80.77759284867693 1271.7121895874184 72.10850886708741z' fill='rgba(84%2c 141%2c 203%2c 0.4)' class='triangle-float3'%3e%3c/path%3e%3cpath d='M1274.5800813865371 208.02895746350265L1380.3590433475968 141.93092605725386 1314.261011941348 36.15196409619415 1208.4820499802884 102.24999550244293z' fill='rgba(84%2c 141%2c 203%2c 0.4)' class='triangle-float3'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1005'%3e%3crect width='1440' height='560' fill='white'%3e%3c/rect%3e%3c/mask%3e%3cstyle%3e %40keyframes float1 %7b 0%25%7btransform: translate(0%2c 0)%7d 50%25%7btransform: translate(-10px%2c 0)%7d 100%25%7btransform: translate(0%2c 0)%7d %7d .triangle-float1 %7b animation: float1 5s infinite%3b %7d %40keyframes float2 %7b 0%25%7btransform: translate(0%2c 0)%7d 50%25%7btransform: translate(-5px%2c -5px)%7d 100%25%7btransform: translate(0%2c 0)%7d %7d .triangle-float2 %7b animation: float2 4s infinite%3b %7d %40keyframes float3 %7b 0%25%7btransform: translate(0%2c 0)%7d 50%25%7btransform: translate(0%2c -10px)%7d 100%25%7btransform: translate(0%2c 0)%7d %7d .triangle-float3 %7b animation: float3 6s infinite%3b %7d %3c/style%3e%3c/defs%3e%3c/svg%3e");
+            background-position: 0px 250px;
+            background-repeat: no-repeat, repeat;
+            background-size:cover;
+        }
+
+        .output {
+            text-align: center;
+            display: none;
+        }
+        .gifsbtn{
+            position: absolute;
+            left: 10px;
+            bottom: 10px;
+        }
+        .circle {
+            width: 50px;
+            height: 50px;
+            background-color: blue;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;background-clip: content-box;
+            font-family: Arial, sans-serif;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+
+<body>
+    <label class="switch switch-slide" style="font-family: Creepster; display: block; text-align: center;">
+        <input class="switch-input" type="checkbox" id="hardcore" />
+        <span class="switch-label" data-on="Yes" data-off="No"></span> 
+        <span class="hardcore">Hardcore mode</span>
+    </label>
+
+    <div class="center">
+        <button class="big-button" id="selectButton">click</button>
+    </div>
+    <p id="randomText"> - - - - - - </p>
+
+    <div class="flags">
+        <span id="flag-fr">🇫🇷</span>
+        <span id="flag-uk">🇬🇧</span>
+    </div>
+    <div class="avatar" id="response">
+        <img
+            src='https://avataaars.io/?avatarStyle=Circle&topType=ShortHairShortWaved&accessoriesType=Prescription02&hairColor=Auburn&facialHairType=BeardLight&facialHairColor=Auburn&clotheType=CollarSweater&clotheColor=Heather&eyeType=Squint&eyebrowType=RaisedExcited&mouthType=Sad&skinColor=Pale' />
+        <img
+            src='https://avataaars.io/?avatarStyle=Circle&topType=ShortHairShortWaved&accessoriesType=Prescription02&hairColor=Auburn&facialHairType=BeardLight&facialHairColor=Auburn&clotheType=CollarSweater&clotheColor=Heather&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Twinkle&skinColor=Light' />
+        <p id="solution"></p>
+    </div>
+    <div class="output" id="gifs"></div>
+    </div>
+    <button class="gifsbtn" onclick="myFunction()">GIFS</button>
+    <!-- cirlces score-->
+    <!-- <div class="circle" onclick="expandCircle('Sara', 'blue')">Sara</div>
+    <div class="circle" onclick="expandCircle('Uygar', 'green')">Uygar</div>
+    <div class="circle" onclick="expandCircle('Lucija', 'orange')">Lucija</div>
+    <div class="circle" onclick="expandCircle('Edourado', 'pink')">Edourado</div>
+    <div class="circle" onclick="expandCircle('Mila', 'yellow')">Mila</div> -->
+    <script>
+
+        // Array of your items
+let items = {
+
+    1: {
+    french: "la bijouterie",
+    english: "jewelry store",
+    type: "Substantifs"
+  },
+  2: {
+    french: "la boucherie",
+    english: "butcher shop",
+    type: "Substantifs"
+  },
+  3: {
+    french: "la boulangerie",
+    english: "bakery",
+    type: "Substantifs"
+  },
+  4: {
+    french: "la boutique",
+    english: "boutique",
+    type: "Substantifs"
+  },
+  5: {
+    french: "la pharmacie",
+    english: "pharmacy",
+    type: "Substantifs"
+  },
+  6: {
+    french: "la montre",
+    english: "watch",
+    type: "Substantifs"
+  },
+  7: {
+    french: "la nourriture",
+    english: "food",
+    type: "Substantifs"
+  },
+  8: {
+    french: "la qualité",
+    english: "quality",
+    type: "Substantifs"
+  },
+  9: {
+    french: "la quantité",
+    english: "quantity",
+    type: "Substantifs"
+  },
+  10: {
+    french: "la robe",
+    english: "dress",
+    type: "Substantifs"
+  },
+  11: {
+    french: "la surconsommation",
+    english: "overconsumption",
+    type: "Substantifs"
+  },
+  12: {
+    french: "les céréales",
+    english: "cereals",
+    type: "Substantifs"
+  },
+  13: {
+    french: "les chaussures (f.)",
+    english: "shoes",
+    type: "Substantifs"
+  },
+  14: {
+    french: "les habits (m.)",
+    english: "clothes",
+    type: "Substantifs"
+  },
+  15: {
+    french: "les vêtements (m.)",
+    english: "clothing",
+    type: "Substantifs"
+  },
+  16: {
+    french: "le café",
+    english: "coffee",
+    type: "Substantifs"
+  },
+  17: {
+    french: "la viande",
+    english: "meat",
+    type: "Substantifs"
+  },
+  18: {
+    french: "le catalogue",
+    english: "catalog",
+    type: "Substantifs"
+  },
+  19: {
+    french: "la voiture",
+    english: "car",
+    type: "Substantifs"
+  },
+  20: {
+    french: "le magasin",
+    english: "store",
+    type: "Substantifs"
+  },
+  21: {
+    french: "le client",
+    english: "customer",
+    type: "Substantifs"
+  },
+  22: {
+    french: "le marché",
+    english: "market",
+    type: "Substantifs"
+  },
+  23: {
+    french: "le collier",
+    english: "necklace",
+    type: "Substantifs"
+  },
+  24: {
+    french: "le restaurant",
+    english: "restaurant",
+    type: "Substantifs"
+  },
+  25: {
+    french: "le commerce",
+    english: "commerce",
+    type: "Substantifs"
+  },
+  26: {
+    french: "équitable",
+    english: "fair",
+    type: "Adjectifs"
+  },
+  27: {
+    french: "le supermarché",
+    english: "supermarket",
+    type: "Substantifs"
+  },
+  28: {
+    french: "le consommateur",
+    english: "consumer",
+    type: "Substantifs"
+  },
+  29: {
+    french: "jaloux",
+    english: "jealous",
+    type: "Adjectifs"
+  },
+  30: {
+    french: "le fruit",
+    english: "fruit",
+    type: "Substantifs"
+  },
+  31: {
+    french: "matérialiste",
+    english: "materialistic",
+    type: "Adjectifs"
+  },
+  32: {
+    french: "pauvre",
+    english: "poor",
+    type: "Adjectifs"
+  },
+  33: {
+    french: "radin",
+    english: "stingy",
+    type: "Adjectifs"
+  },
+  34: {
+    french: "le manteau",
+    english: "coat",
+    type: "Substantifs"
+  },
+  35: {
+    french: "le pain",
+    english: "bread",
+    type: "Substantifs"
+  },
+  36: {
+    french: "riche",
+    english: "rich",
+    type: "Adjectifs"
+  },
+  37: {
+    french: "le pantalon",
+    english: "pants",
+    type: "Substantifs"
+  },
+  38: {
+    french: "le poisson",
+    english: "fish",
+    type: "Substantifs"
+  },
+  39: {
+    french: "le produit",
+    english: "product",
+    type: "Substantifs"
+  },
+  40: {
+    french: "le pull",
+    english: "sweater",
+    type: "Substantifs"
+  },
+  41: {
+    french: "le T-shirt",
+    english: "T-shirt",
+    type: "Substantifs"
+  },
+  42: {
+    french: "l'accessoire (m.)",
+    english: "accessory",
+    type: "Substantifs"
+  },
+  43: {
+    french: "l'argent",
+    english: "money",
+    type: "Substantifs"
+  },
+  44: {
+    french: "l'écharpe (f.)",
+    english: "scarf",
+    type: "Substantifs"
+  },
+  45: {
+    french: "le légume",
+    english: "vegetable",
+    type: "Substantifs"
+  },
+  46: {
+    french: "la bague",
+    english: "ring",
+    type: "Substantifs"
+  },
+  47: {
+    french: "la blouse",
+    english: "blouse",
+    type: "Substantifs"
+  },
+  48: {
+    french: "la boisson",
+    english: "drink",
+    type: "Substantifs"
+  },
+  49: {
+    french: "la carte bancaire",
+    english: "credit card",
+    type: "Substantifs"
+  },
+  50: {
+    french: "la chemise",
+    english: "shirt",
+    type: "Substantifs"
+  },
+  51: {
+    french: "la jupe",
+    english: "skirt",
+    type: "Substantifs"
+  },
+  52: {
+    french: "la mode",
+    english: "fashion",
+    type: "Substantifs"
+  },
+  53: {
+    french: "la monnaie",
+    english: "currency",
+    type: "Substantifs"
+  },
+  54: {
+    french: "le téléphone portable",
+    english: "mobile phone",
+    type: "Substantifs"
+  },
+  55: {
+    french: "le vendeur",
+    english: "salesperson",
+    type: "Substantifs"
+  },
+  56: {
+    french: "responsable",
+    english: "responsible",
+    type: "Adjectifs"
+  },
+  57: {
+    french: "rarement",
+    english: "rarely",
+    type: "Adverbes"
+  },
+  58: {
+    french: "régulièrement",
+    english: "regularly",
+    type: "Adverbes"
+  },
+  59: {
+    french: "acheter",
+    english: "to buy",
+    type: "Verbes"
+  },
+  60: {
+    french: "aller bien",
+    english: "to go well",
+    type: "Verbes"
+  },
+  61: {
+    french: "boire",
+    english: "to drink",
+    type: "Verbes"
+  },
+  62: {
+    french: "commander",
+    english: "to order",
+    type: "Verbes"
+  },
+  63: {
+    french: "consommer",
+    english: "to consume",
+    type: "Verbes"
+  },
+  64: {
+    french: "dépenser",
+    english: "to spend",
+    type: "Verbes"
+  },
+  65: {
+    french: "échanger",
+    english: "to exchange",
+    type: "Verbes"
+  },
+  66: {
+    french: "essayer",
+    english: "to try",
+    type: "Verbes"
+  },
+  67: {
+    french: "faire les magasins",
+    english: "to go shopping",
+    type: "Verbes"
+  },
+  68: {
+    french: "gaspiller",
+    english: "to waste",
+    type: "Verbes"
+  },
+  69: {
+    french: "goûter",
+    english: "to taste",
+    type: "Verbes"
+  },
+  70: {
+    french: "manger",
+    english: "to eat",
+    type: "Verbes"
+  },
+  71: {
+    french: "payer",
+    english: "to pay",
+    type: "Verbes"
+  },
+  72: {
+    french: "posséder",
+    english: "to possess",
+    type: "Verbes"
+  },
+  73: {
+    french: "prendre",
+    english: "to take",
+    type: "Verbes"
+  },
+  74: {
+    french: "rembourser",
+    english: "to reimburse",
+    type: "Verbes"
+  },
+  75: {
+    french: "rendre",
+    english: "to return",
+    type: "Verbes"
+  },
+  76: {
+    french: "retourner",
+    english: "to go back",
+    type: "Verbes"
+  },
+  77: {
+    french: "servir",
+    english: "to serve",
+    type: "Verbes"
+  },
+  78: {
+    french: "s'habiller",
+    english: "to dress oneself",
+    type: "Verbes"
+  },
+  79: {
+    french: "utiliser",
+    english: "to use",
+    type: "Verbes"
+  },
+  80: {
+    french: "vendre",
+    english: "to sell",
+    type: "Verbes"
+  }
+};
+
+let itemsHardcore = {
+
+
+};
+
+        // console.log(Object.entries(items)[50])
+        // console.log(Object.keys(items).length)
+        let itemToDelete;
+
+        const textBox = document.getElementById("randomText");
+        const solution = document.getElementById("solution");
+        const flagFr = document.getElementById("flag-fr");
+        const flagUk = document.getElementById("flag-uk");
+        const avatar = document.getElementById("response");
+        const hardcore = document.querySelector('#hardcore');
+
+        let checkChange = hardcore.addEventListener("change", hardcoreLevel)
+        let language = "french"
+
+        function hardcoreLevel(){
+            //console.log(hardcore.checked);
+            if(hardcore.checked){
+                items = itemsHardcore
+                document.body.style.backgroundBlendMode = "difference";
+                document.body.style.backgroundColor = 'darkslateblue';
+            }else{
+                items = items
+                document.body.style.backgroundBlendMode = "normal";
+                document.body.style.backgroundColor = 'white';
+            }
+        }
+        hardcore
+        // Function to select and display a random item
+        function selectRandomItem() {
+            
+            console.log(Object.keys(items).length)
+            //console.log(itemToDelete);
+            const randomIndex = Math.floor(Math.random() * Object.keys(items).length);
+            //console.log(randomIndex);
+            const randomLanguage = (Math.random() >= 0.5) ? 1 : 0;
+            randomLanguage == 0
+                ? (
+                    textBox.style.color = "blue",
+                    flagFr.style.display = "block",
+                    flagUk.style.display = "none",
+                    language = "french"
+
+                ) : (
+                    textBox.style.color = "black",
+                    flagFr.style.display = "none",
+                    flagUk.style.display = "block",
+                    language = "english"
+                );
+            const randomItem = Object.entries(items)[randomIndex][1].language;
+            itemToDelete = Object.entries(items)[randomIndex];
+           console.log(randomItem.language);
+
+            textBox.textContent = randomItem;
+            solution.textContent = Object.entries(items)[randomIndex][(randomLanguage == 0 ? 1 : 0)]
+            disableButton()
+            clearOutput()
+            getData(Object.entries(items)[randomIndex][randomLanguage == 0 ? 1 : 1])
+            delete items[itemToDelete[0]];
+        }
+        // Function to disable button
+        function disableButton() {
+            const btn = document.getElementById("selectButton");
+            btn.disabled = true;
+            btn.textContent = "wait";
+            btn.style.opacity = "0.2";
+            setTimeout(function () {
+                btn.disabled = false;
+                btn.textContent = "click";
+                btn.style.opacity = "1";
+
+            }, 500);
+            // setTimeout(function(){
+
+            // },3000)
+        }
+
+        function displaySolution() {
+            solution.style.display = "block";
+            setTimeout(function () {
+                solution.style.display = "none";
+            }, 3000)
+        }
+
+        // Add a click event listener to the button
+        document.getElementById("selectButton").addEventListener("click", selectRandomItem);
+        avatar.addEventListener("click", displaySolution);
+
+        //gyphy stuff
+
+        /*Get data from the API*/
+        function getData(input) {
+            var API_KEY = "aIFzHd5n7j7I4zPMQ6Ce8iNkYxsBlGqW";
+            var url =
+                "https://api.giphy.com/v1/gifs/search?api_key=" +
+                API_KEY +
+                "&q=" +
+                input +
+                "&limit=1&offset=0&rating=pg&lang=en&bundle=sticker_layering"; 
+            fetch(url)
+                .then((response) => response.json())
+                .then((data) => showData(data.data))
+                .catch((e) => {
+                    //console.log(e);
+                });
+        }
+        /*Display the output*/
+        function showData(data) {
+            data.forEach((element) => {
+                var src = element.images.fixed_height.url;
+                var output = document.querySelector(".output");
+                output.innerHTML += "<img src=" + src + " >";
+            });
+        }
+        /*clearing the ouptut*/
+        function clearOutput() {
+            var output = document.querySelector(".output");
+            output.innerHTML = "";
+        }
+        function myFunction() {
+            var x = document.getElementById("gifs");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+        //circles score
+        let size = 50;
+
+        // function expandCircle(name, color) {
+        //     let circle = document.querySelector('.circle');
+        //     size += 10;
+        //     circle.style.width = size + 'px';
+        //     circle.style.height = size + 'px';
+        //     circle.style.borderRadius = size / 2 + 'px';
+        //     circle.style.backgroundColor = color;
+        //     circle.textContent = name;
+        // }
+
+        
+    </script>
+</body>
+
+</html>
