@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Quiz</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: linear-gradient(rgba(101, 135, 24, 0.9), rgba(255, 255, 255, 0.4)), url("https://media.cntraveler.com/photos/63e6adf10d76d0a2d739758c/16:9/w_2240,c_limit/Galeries%20Lafayette%20Haussmann_2B7CPJW.jpg") center/cover no-repeat;
+        }
+
+        #quiz-container {
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .title {
+            font-family: 'Roboto', sans-serif;
+            font-size: 2em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #dfb02e;
+        }
+        .question {
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .option {
+            padding: 15px;
+            cursor: pointer;
+            border: 1px solid #dfb02e;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .option:hover {
+            background-color: #dfb02e;
+            color: #fff;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #27ae60;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin-top: 20px;
+            cursor: pointer;
+            border: none;
+            background-color: #dfb02e;
+            color: #fff;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #c46b17;
+        }
+    </style>
+</head>
+<body>
+    <div id="quiz-container">
+        <div class="title">QUIZZ Du SHOPPING</div>
+        <div class="question" id="question"></div>
+        <div class="options" id="options"></div>
+        <div class="result" id="result"></div>
+        <button onclick="nextQuestion()">Next Question</button>
+    </div>
+
+    <script>
+        const quizData = [
+
+        { question: "What does 'la bijouterie' mean?", options: ["Jewelry store", "Bakery", "Pharmacy"], correct: "Jewelry store" },
+        { question: "Translate 'la boucherie' into English.", options: ["Butcher shop", "Supermarket", "Clothing store"], correct: "Butcher shop" },
+        { question: "Where can you buy 'le pain'?", options: ["Bakery", "Supermarket", "Restaurant"], correct: "Bakery" },
+        { question: "What is 'le marché'?", options: ["Market", "Store", "Catalog"], correct: "Market" },
+        { question: "Translate 'la voiture' into English.", options: ["Car", "Necklace", "Dress"], correct: "Car" },
+        { question: "What is 'le fruit'?", options: ["Fruit", "Meat", "Drink"], correct: "Fruit" },
+        { question: "Where can you find 'la pharmacie'?", options: ["Pharmacy", "Fashion store", "Supermarket"], correct: "Pharmacy" },
+        { question: "What does 'équitable' mean?", options: ["Fair", "Jealous", "Rich"], correct: "Fair" },
+        { question: "Translate 'le supermarché' into English.", options: ["Supermarket", "Fashion store", "Market"], correct: "Supermarket" },
+        { question: "What is 'le téléphone portable'?", options: ["Mobile phone", "Credit card", "Ring"], correct: "Mobile phone" },
+        { question: "What does 'responsable' mean?", options: ["Responsible", "Stingy", "Inexpensive"], correct: "Responsible" },
+        { question: "Translate 'la jupe' into English.", options: ["Skirt", "Sweater", "Shirt"], correct: "Skirt" },
+        { question: "Where can you buy 'les chaussures'?", options: ["Shoe store", "Clothing store", "Jewelry store"], correct: "Shoe store" },
+        { question: "What is 'la boisson'?", options: ["Drink", "Bread", "Meat"], correct: "Drink" },
+        { question: "Translate 'le matériau' into English.", options: ["Material", "Money", "Fashion"], correct: "Material" },
+        { question: "What does 'jaloux' mean?", options: ["Jealous", "Bitter", "Economical"], correct: "Jealous" },
+        { question: "Where can you buy 'la robe'?", options: ["Dress shop", "Supermarket", "Market"], correct: "Dress shop" },
+        { question: "What is 'la montre'?", options: ["Watch", "Necklace", "Coat"], correct: "Watch" },
+        { question: "Translate 'le pull' into English.", options: ["Sweater", "Pants", "Shirt"], correct: "Sweater" },
+        { question: "What does 'la qualité' mean?", options: ["Quality", "Quantity", "Fair"], correct: "Quality" },
+        { question: "Where can you buy 'la blouse'?", options: ["Clothing store", "Pharmacy", "Bakery"], correct: "Clothing store" },
+        { question: "Translate 'le vendeur' into English.", options: ["Salesperson", "Customer", "Product"], correct: "Salesperson" },
+        { question: "What is 'la bague'?", options: ["Ring", "Coat", "Watch"], correct: "Ring" },
+        { question: "Translate 'le produit' into English.", options: ["Product", "Currency", "Dress"], correct: "Product" },
+        { question: "What does 'le pantalon' mean?", options: ["Pants", "Sweater", "Shoe"], correct: "Pants" },
+        { question: "Where can you buy 'le collier'?", options: ["Jewelry store", "Supermarket", "Market"], correct: "Jewelry store" },
+        { question: "What is 'la chemise'?", options: ["Shirt", "Skirt", "Dress"], correct: "Shirt" },
+        { question: "Translate 'la monnaie' into English.", options: ["Currency", "Quality", "Necklace"], correct: "Currency" },
+        { question: "What does 'le T-shirt' mean?", options: ["T-shirt", "Dress", "Sweater"], correct: "T-shirt" },
+        { question: "Where can you buy 'l'écharpe'?", options: ["Clothing store", "Market", "Jewelry store"], correct: "Clothing store" },
+        { question: "Translate 'l'argent' into English.", options: ["Money", "Material", "Market"], correct: "Money" },
+        { question: "What is 'le consommateur'?", options: ["Consumer", "Product", "Catalog"], correct: "Consumer" },
+        { question: "What does 'la carte bancaire' mean?", options: ["Credit card", "Market", "Fashion store"], correct: "Credit card" },
+        { question: "Where can you buy 'la blouse'?", options: ["Clothing store", "Pharmacy", "Bakery"], correct: "Clothing store" },
+        { question: "Translate 'le vendeur' into English.", options: ["Salesperson", "Customer", "Product"], correct: "Salesperson" },
+        { question: "What is 'la bague'?", options: ["Ring", "Coat", "Watch"], correct: "Ring" },
+        { question: "Translate 'le produit' into English.", options: ["Product", "Currency", "Dress"], correct: "Product" },
+        { question: "What does 'le pantalon' mean?", options: ["Pants", "Sweater", "Shoe"], correct: "Pants" },
+        { question: "Where can you buy 'le collier'?", options: ["Jewelry store", "Supermarket", "Market"], correct: "Jewelry store" },
+        { question: "What is 'la chemise'?", options: ["Shirt", "Skirt", "Dress"], correct: "Shirt" },
+        { question: "Translate 'la monnaie' into English.", options: ["Currency", "Quality", "Necklace"], correct: "Currency" },
+        { question: "What does 'le T-shirt' mean?", options: ["T-shirt", "Dress", "Sweater"], correct: "T-shirt" },
+        { question: "Where can you buy 'l'écharpe'?", options: ["Clothing store", "Market", "Jewelry store"], correct: "Clothing store" },
+        { question: "Translate 'l'argent' into English.", options: ["Money", "Material", "Market"], correct: "Money" },
+        { question: "What is 'le consommateur'?", options: ["Consumer", "Product", "Catalog"], correct: "Consumer" },
+        { question: "What does 'le fruit'?", options: ["Fruit", "Meat", "Drink"], correct: "Fruit" },
+        { question: "Translate 'le supermarché' into English.", options: ["Supermarket", "Fashion store", "Market"], correct: "Supermarket" },
+        { question: "What is 'la qualité'?", options: ["Quality", "Quantity", "Fair"], correct: "Quality" },
+        { question: "Where can you buy 'la blouse'?", options: ["Clothing store", "Pharmacy", "Bakery"], correct: "Clothing store" },
+        { question: "Translate 'le vendeur' into English.", options: ["Salesperson", "Customer", "Product"], correct: "Salesperson" },
+        { question: "What is 'la bague'?", options: ["Ring", "Coat", "Watch"], correct: "Ring" },
+        { question: "Translate 'le produit' into English.", options: ["Product", "Currency", "Dress"], correct: "Product" },
+        { question: "What does 'le pantalon' mean?", options: ["Pants", "Sweater", "Shoe"], correct: "Pants" },
+        { question: "Where can you buy 'le collier'?", options: ["Jewelry store", "Supermarket", "Market"], correct: "Jewelry store" },
+        { question: "What is 'la chemise'?", options: ["Shirt", "Skirt", "Dress"], correct: "Shirt" },
+        { question: "Translate 'la monnaie' into English.", options: ["Currency", "Quality", "Necklace"], correct: "Currency" },
+        { question: "What does 'le T-shirt' mean?", options: ["T-shirt", "Dress", "Sweater"], correct: "T-shirt" },
+        { question: "Where can you buy 'l'écharpe'?", options: ["Clothing store", "Market", "Jewelry store"], correct: "Clothing store" },
+        { question: "Translate 'l'argent' into English.", options: ["Money", "Material", "Market"], correct: "Money" },
+        { question: "What is 'le consommateur'?", options: ["Consumer", "Product", "Catalog"], correct: "Consumer" },
+        { question: "What does 'équitable' mean?", options: ["Fair", "Jealous", "Rich"], correct: "Fair" },
+        { question: "Translate 'la jupe' into English.", options: ["Skirt", "Sweater", "Shirt"], correct: "Skirt" },
+        { question: "Where can you buy 'les chaussures'?", options: ["Shoe store", "Clothing store", "Jewelry store"], correct: "Shoe store" },
+        { question: "What is 'la boisson'?", options: ["Drink", "Bread", "Meat"], correct: "Drink" },
+        { question: "Translate 'le matériau' into English.", options: ["Material", "Money", "Fashion"], correct: "Material" },
+        { question: "What does 'jaloux' mean?", options: ["Jealous", "Bitter", "Economical"], correct: "Jealous" },
+        { question: "Where can you buy 'la robe'?", options: ["Dress shop", "Supermarket", "Market"], correct: "Dress shop" },
+        { question: "What is 'la montre'?", options: ["Watch", "Necklace", "Coat"], correct: "Watch" },
+        { question: "Translate 'le pull' into English.", options: ["Sweater", "Pants", "Shirt"], correct: "Sweater" },
+        { question: "What does 'la qualité' mean?", options: ["Quality", "Quantity", "Fair"], correct: "Quality" },
+        { question: "Where can you buy 'la blouse'?", options: ["Clothing store", "Pharmacy", "Bakery"], correct: "Clothing store" },
+        { question: "Translate 'le vendeur' into English.", options: ["Salesperson", "Customer", "Product"], correct: "Salesperson" },
+        { question: "What is 'la bague'?", options: ["Ring", "Coat", "Watch"], correct: "Ring" },
+        { question: "Translate 'le produit' into English.", options: ["Product", "Currency", "Dress"], correct: "Product" },
+        { question: "What does 'le pantalon' mean?", options: ["Pants", "Sweater", "Shoe"], correct: "Pants" },
+        { question: "Where can you buy 'le collier'?", options: ["Jewelry store", "Supermarket", "Market"], correct: "Jewelry store" },
+        { question: "What is 'la chemise'?", options: ["Shirt", "Skirt", "Dress"], correct: "Shirt" },
+
+       ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            const questionElement = document.getElementById("question");
+            const optionsElement = document.getElementById("options");
+
+            questionElement.textContent = quizData[currentQuestion].question;
+            optionsElement.innerHTML = "";
+
+            quizData[currentQuestion].options.forEach((option, index) => {
+                const optionElement = document.createElement("div");
+                optionElement.classList.add("option");
+                optionElement.textContent = option;
+                optionElement.onclick = () => checkAnswer(option);
+                optionsElement.appendChild(optionElement);
+            });
+        }
+
+        function checkAnswer(selectedOption) {
+            const correctOption = quizData[currentQuestion].correct;
+            const resultElement = document.getElementById("result");
+
+            if (selectedOption === correctOption) {
+                resultElement.textContent = "Correct!";
+                score++;
+            } else {
+                resultElement.innerHTML = `<p style="color:red;">Incorrect. Correct answer: ${correctOption}</p>`;
+            }
+
+            disableOptions();
+        }
+
+        function disableOptions() {
+            const options = document.querySelectorAll(".option");
+            options.forEach(option => option.onclick = null);
+        }
+
+        function nextQuestion() {
+            const resultElement = document.getElementById("result");
+            resultElement.textContent = "";
+
+            if (currentQuestion < quizData.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                showFinalScore();
+            }
+        }
+
+        function showFinalScore() {
+            const questionElement = document.getElementById("question");
+            const optionsElement = document.getElementById("options");
+            const resultElement = document.getElementById("result");
+
+            questionElement.textContent = `Quiz completed! Your final score: ${score}/${quizData.length}`;
+            optionsElement.innerHTML = "";
+            resultElement.textContent = "";
+
+            // Hide the "Next Question" button after the quiz is completed
+            document.querySelector("button").style.display = "none";
+        }
+
+        // Initial load
+        loadQuestion();
+    </script>
+</body>
+</html>
