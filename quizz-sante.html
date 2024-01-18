@@ -176,7 +176,7 @@
                 resultElement.textContent = "Correct!";
                 score++;
             } else {
-                resultElement.textContent = `Incorrect. Correct answer: ${correctOption}`;
+                resultElement.innerHTML = `<p style="color:red;">Incorrect. Correct answer: ${correctOption}</p>`;
             }
 
             disableOptions();
