@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutrition Quiz</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: linear-gradient(rgba(101, 135, 24, 0.9), rgba(255, 255, 255, 0.4)), url("https://freepngimg.com/thumb/vegetable/9-2-vegetable-free-download-png.png") center/cover no-repeat;
+        }
+
+        #quiz-container {
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .title {
+            font-family: 'Roboto', sans-serif;
+            font-size: 2em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #669f11;
+        }
+        .question {
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .option {
+            padding: 15px;
+            cursor: pointer;
+            border: 1px solid #669f11;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .option:hover {
+            background-color: #669f11;
+            color: #fff;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #27ae60;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin-top: 20px;
+            cursor: pointer;
+            border: none;
+            background-color: #669f11;
+            color: #fff;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div id="quiz-container">
+        <div class="title">QUIZZ DE LA SANTÉ</div>
+        <div class="question" id="question"></div>
+        <div class="options" id="options"></div>
+        <div class="result" id="result"></div>
+        <button onclick="nextQuestion()">Next Question</button>
+    </div>
+
+    <script>
+        const quizData = [
+            { question: "l'aide humanitaire", options: ["Malnutrition", "Humanitarian aid", "Dietary balance"], correct: "Humanitarian aid" },
+            { question: "l'appétit", options: ["Appetite", "Hunger", "Thirst"], correct: "Appetite" },
+            { question: "l'apport calorique/en vitamines", options: ["Caloric/vitamin intake", "Carbohydrates", "Fatty"], correct: "Caloric/vitamin intake" },
+            { question: "la banque alimentaire", options: ["Food bank", "Obesity issues", "Junk food"], correct: "Food bank" },
+            { question: "les carences alimentaires", options: ["Nutritional deficiencies", "Vitamins and minerals", "Good/bad health"], correct: "Nutritional deficiencies" },
+            { question: "l'équilibre alimentaire", options: ["Dietary balance", "Sweet/salty", "To devour"], correct: "Dietary balance" },
+            { question: "la faim", options: ["Hunger", "Famine", "Undernutrition"], correct: "Hunger" },
+            { question: "la famine", options: ["Famine", "Overnutrition", "Thin"], correct: "Famine" },
+            { question: "les glucides", options: ["Carbohydrates", "To taste", "Lean"], correct: "Carbohydrates" },
+            { question: "les lipides", options: ["Lipids", "Stringy", "To chew"], correct: "Lipids" },
+            { question: "la malbouffe", options: ["Junk food", "Malnutrition", "Rough"], correct: "Junk food" },
+            { question: "la malnutrition", options: ["Malnutrition", "Fatty", "Healthy"], correct: "Malnutrition" },
+            { question: "les problèmes d'obésité", options: ["Obesity issues", "To fatten up", "Grainy"], correct: "Obesity issues" },
+            { question: "un régime (amaigrissant)", options: ["Weight-loss diet", "Soft", "To swallow"], correct: "Weight-loss diet" },
+            { question: "la soif", options: ["Thirst", "To instill", "To gulp down"], correct: "Thirst" },
+            { question: "la sous-alimentation", options: ["Undernutrition", "Overweight", "To nourish oneself"], correct: "Undernutrition" },
+            { question: "la sous-nutrition", options: ["Undernutrition", "Healthy", "To be famished"], correct: "Undernutrition" },
+            { question: "la surcharge pondérale", options: ["Overweight", "Weak", "To opt for"], correct: "Overweight" },
+            { question: "la surnutrition", options: ["Overnutrition", "Vitamins and minerals", "To taste"], correct: "Overnutrition" },
+            { question: "les vitamines et minéraux", options: ["Vitamins and minerals", "Stringy", "Famine"], correct: "Vitamins and minerals" },
+            { question: "bonne/mauvaise santé", options: ["Good/bad health", "Rough", "Weak"], correct: "Good/bad health" },
+            { question: "carencé", options: ["Deficient", "Soft", "To chew"], correct: "Deficient" },
+            { question: "faible", options: ["Weak", "Lean", "Rough"], correct: "Weak" },
+            { question: "filandreux", options: ["Stringy", "Thin", "Rough"], correct: "Stringy" },
+            { question: "fort", options: ["Strong", "Deficient", "Grainy"], correct: "Strong" },
+            { question: "granuleux", options: ["Grainy", "Healthy", "To gobble up"], correct: "Grainy" },
+            { question: "gras", options: ["Fatty", "Undernutrition", "To gulp down"], correct: "Fatty" },
+            { question: "maigre", options: ["Lean", "To devour", "Obesity issues"], correct: "Lean" },
+            { question: "mince", options: ["Thin", "Overweight", "To swallow"], correct: "Thin" },
+            { question: "moelleux", options: ["Soft", "To chew", "Healthy"], correct: "Soft" },
+            { question: "mou (molle)", options: ["Soft", "To gobble up", "Undernutrition"], correct: "Soft" },
+            { question: "rugueux", options: ["Rough", "To fatten up", "To be famished"], correct: "Rough" },
+            { question: "sain", options: ["Healthy", "To instill", "Junk food"], correct: "Healthy" },
+            { question: "sucré/salé", options: ["Sweet/salty", "Vitamins and minerals", "Fatty"], correct: "Sweet/salty" },
+            { question: "tendre", options: ["Tender", "Obesity issues", "Rough"], correct: "Tender" },
+            { question: "visqueux", options: ["Viscous", "To fatten up", "To chew"], correct: "Viscous" },
+            { question: "avaler", options: ["To swallow", "To chew", "To devour"], correct: "To swallow" },
+            { question: "bouffer (fam.)", options: ["To chow down (slang)", "To taste", "To be famished"], correct: "To chow down (slang)" },
+            { question: "déguster", options: ["To taste", "Healthy", "To devour"], correct: "To taste" },
+            { question: "dévorer", options: ["To devour", "To gulp down", "Obesity issues"], correct: "To devour" },
+            { question: "engloutir", options: ["To gulp down", "To chew", "To be famished"], correct: "To gulp down" },
+            { question: "engouffrer", options: ["To gobble up", "To opt for", "To swallow"], correct: "To gobble up" },
+            { question: "engraisser", options: ["To fatten up", "Overweight", "To chew"], correct: "To fatten up" },
+            { question: "être affamé", options: ["To be famished", "To swallow", "To chew"], correct: "To be famished" },
+            { question: "se gaver", options: ["To stuff oneself", "To chew", "To taste"], correct: "To stuff oneself" },
+            { question: "guérir", options: ["To heal", "To gulp down", "To promote"], correct: "To heal" },
+            { question: "inculquer", options: ["To instill", "To gobble up", "To be famished"], correct: "To instill" },
+            { question: "manger mieux", options: ["To chew", "To eat better", "To bite"], correct: "To eat better" },
+            { question: "mâcher", options: ["To treat", "To chew", "To swallow"], correct: "To chew" },
+            { question: "mordre", options: ["To bite", "To taste", "To devour"], correct: "To bite" },
+            { question: "se nourrir", options: ["To nourish oneself", "To opt for", "To be famished"], correct: "To nourish oneself" },
+            { question: "opter pour", options: ["To promote", "To opt for", "To taste"], correct: "To opt for" },
+            { question: "promouvoir", options: ["To taste", "To promote", "To devour"], correct: "To promote" },
+            { question: "soigner", options: ["To gulp down", "To heal", "To chew"], correct: "To heal" },
+            { question: "souffrir de la faim", options: ["To be famished", "To stuff oneself", "To swallow"], correct: "To suffer from hunger" },
+       ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            const questionElement = document.getElementById("question");
+            const optionsElement = document.getElementById("options");
+
+            questionElement.textContent = quizData[currentQuestion].question;
+            optionsElement.innerHTML = "";
+
+            quizData[currentQuestion].options.forEach((option, index) => {
+                const optionElement = document.createElement("div");
+                optionElement.classList.add("option");
+                optionElement.textContent = option;
+                optionElement.onclick = () => checkAnswer(option);
+                optionsElement.appendChild(optionElement);
+            });
+        }
+
+        function checkAnswer(selectedOption) {
+            const correctOption = quizData[currentQuestion].correct;
+            const resultElement = document.getElementById("result");
+
+            if (selectedOption === correctOption) {
+                resultElement.textContent = "Correct!";
+                score++;
+            } else {
+                resultElement.textContent = `Incorrect. Correct answer: ${correctOption}`;
+            }
+
+            disableOptions();
+        }
+
+        function disableOptions() {
+            const options = document.querySelectorAll(".option");
+            options.forEach(option => option.onclick = null);
+        }
+
+        function nextQuestion() {
+            const resultElement = document.getElementById("result");
+            resultElement.textContent = "";
+
+            if (currentQuestion < quizData.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                showFinalScore();
+            }
+        }
+
+        function showFinalScore() {
+            const questionElement = document.getElementById("question");
+            const optionsElement = document.getElementById("options");
+            const resultElement = document.getElementById("result");
+
+            questionElement.textContent = `Quiz completed! Your final score: ${score}/${quizData.length}`;
+            optionsElement.innerHTML = "";
+            resultElement.textContent = "";
+
+            // Hide the "Next Question" button after the quiz is completed
+            document.querySelector("button").style.display = "none";
+        }
+
+        // Initial load
+        loadQuestion();
+    </script>
+</body>
+</html>
