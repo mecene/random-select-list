@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz des repas</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: linear-gradient(rgba(101, 135, 24, 0.9), rgba(255, 255, 255, 0.4)), url("https://freepngimg.com/thumb/vegetable/9-2-vegetable-free-download-png.png") center/cover no-repeat;
+        }
+
+        #quiz-container {
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .title {
+            font-family: 'Roboto', sans-serif;
+            font-size: 2em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #669f11;
+        }
+        .question {
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .option {
+            padding: 15px;
+            cursor: pointer;
+            border: 1px solid #669f11;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .option:hover {
+            background-color: #669f11;
+            color: #fff;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #27ae60;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin-top: 20px;
+            cursor: pointer;
+            border: none;
+            background-color: #669f11;
+            color: #fff;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div id="quiz-container">
+        <div class="title">QUIZZ DES REPAS / ALIMENTATION</div>
+        <div class="question" id="question"></div>
+        <div class="options" id="options"></div>
+        <div class="result" id="result"></div>
+        <button onclick="nextQuestion()">Next Question</button>
+    </div>
+
+<script>
+
+    const quizData = [
+        { question: "J'aime manger de la viande", options: ["I like to eat meat", "I am a vegetarian", "I don't like meat"], correct: "I like to eat meat" },
+        { question: "Il a avalé une mouche", options: ["He swallowed a bee", "He swallowed a spider", "He swallowed a fly"], correct: "He swallowed a fly" },
+        { question: "Boire trop de café est mauvais pour la santé", options: ["Tea is good for health", "Water is essential for health", "Drinking too much coffee is bad for health"], correct: "Drinking too much coffee is bad for health" },
+        { question: "La farine est un aliment de base", options: ["Rice is a staple food", "Flour is a staple food", "Sugar is a staple food"], correct: "Flour is a staple food" },
+        { question: "Une bonne alimentation", options: ["A good diet", "A bad diet", "A vegetarian diet"], correct: "A good diet" },
+        { question: "Tu veux une boisson", options: ["Do you want a drink", "Do you want a meal", "Do you want a snack"], correct: "Do you want a drink" },
+        { question: "Le beurre est riche en calories", options: ["Butter is low in calories", "Butter is high in calories", "Butter is moderate in calories"], correct: "Butter is high in calories" },
+        { question: "Il a posé son assiette sur la table.", options: ["He placed his plate on the table.", "He threw his plate out of the window.", "He dropped his plate on the floor."], correct: "He placed his plate on the table." },
+        { question: "Il est important de consommer des légumes tous les jours.", options: ["It is important to avoid vegetables every day.", "It is important to consume vegetables every day.", "It is important to consume vegetables occasionally."], correct: "It is important to consume vegetables every day." },
+        { question: "Les céréales sont un bon choix pour le petit-déjeuner.", options: ["Cereals are not a good choice for breakfast.", "Cereals are a good choice for breakfast.", "Cereals are a good choice for lunch."], correct: "Cereals are a good choice for breakfast." },
+        { question: "J'ai acheté une bouteille d'eau au magasin.", options: ["I bought a bottle of water at the store.", "I bought a bottle of juice at the store.", "I bought a bottle of soda at the store."], correct: "I bought a bottle of water at the store." },
+        { question: "Elle utilise une fourchette pour manger la salade.", options: ["She uses a fork to eat salad.", "She uses a knife to eat salad.", "She uses a spoon to eat salad."], correct: "She uses a fork to eat salad." },
+        { question: "Le chef utilise un couteau pour couper les légumes.", options: ["The chef uses a knife to cut the vegetables.", "The chef uses a fork to cut the vegetables.", "The chef uses scissors to cut the vegetables."], correct: "The chef uses a knife to cut the vegetables." },
+        { question: "Ce restaurant propose un plat de pâtes délicieux.", options: ["This restaurant offers a delicious pasta dish.", "This restaurant offers a spicy dish.", "This restaurant offers a vegetarian dish."], correct: "This restaurant offers a delicious pasta dish." },
+        { question: "Le gâteau au chocolat est mon dessert préféré.", options: ["Chocolate cake is my favorite dessert.", "Vanilla cake is my favorite dessert.", "Strawberry cake is my favorite dessert."], correct: "Chocolate cake is my favorite dessert." },
+        { question: "Je mange un fruit chaque matin pour le petit-déjeuner.", options: ["I eat a fruit every morning for breakfast.", "I eat meat every morning for breakfast.", "I skip breakfast every morning."], correct: "I eat a fruit every morning for breakfast." },
+        { question: "Le citron a un goût acide.", options: ["Lemon has a sweet taste.", "Lemon has a sour taste.", "Lemon has a bitter taste."], correct: "Lemon has a sour taste." },
+        { question: "Le lait a tourné et a un goût aigre.", options: ["The milk turned and has a sweet taste.", "The milk turned and has a bitter taste.", "The milk turned and has a sour taste."], correct: "The milk turned and has a sour taste." },
+        { question: "Ce gâteau au fromage est délicieux.", options: ["This cheesecake is delicious.", "This cheesecake is bland.", "This cheesecake is spicy."], correct: "This cheesecake is delicious." },
+        { question: "Les bonbons sont souvent sucrés.", options: ["Candies are often sweet.", "Candies are often salty.", "Candies are often spicy."], correct: "Candies are often sweet." },
+        { question: "J'aime les plats épicés.", options: ["I like spicy dishes.", "I like bland dishes.", "I like sweet dishes."], correct: "I like spicy dishes." },
+        { question: "Ce plat est un peu fade.", options: ["This dish is a bit bland.", "This dish is a bit spicy.", "This dish is a bit sweet."], correct: "This dish is a bit bland." },
+        { question: "Ce plat est très goûteux.", options: ["This dish is very flavorful / tasty.", "This dish is very bland.", "This dish is very spicy."], correct: "This dish is very flavorful / tasty." },
+        { question: "Les frites sont riches en gras.", options: ["French fries are high in fat.", "French fries are low in fat.", "French fries are moderate in fat."], correct: "French fries are high in fat." },
+        { question: "Les oranges sont juteuses et rafraîchissantes.", options: ["Oranges are dry and refreshing.", "Oranges are juicy and refreshing.", "Oranges are bitter and refreshing."], correct: "Oranges are juicy and refreshing." },
+        { question: "Le poulet est une viande maigre.", options: ["Chicken is a lean meat.", "Chicken is a fatty meat.", "Chicken is a spicy meat."], correct: "Chicken is a lean meat." },
+        { question: "Manger trop de sucreries peut être malsain.", options: ["Eating too many sweets can be unhealthy.", "Eating too many vegetables can be unhealthy.", "Eating too much meat can be unhealthy."], correct: "Eating too many sweets can be unhealthy." },
+        { question: "Les légumes verts sont très nutritifs.", options: ["Green vegetables are very nutritious.", "Green vegetables are not nutritious.", "Green vegetables are moderately nutritious."], correct: "Green vegetables are very nutritious." },
+        { question: "Il faut couper les légumes avant de les cuisiner.", options: ["You need to cut the vegetables before cooking them.", "You need to boil the vegetables before cooking them.", "You need to fry the vegetables before cooking them."], correct: "You need to cut the vegetables before cooking them." },
+        { question: "Ma grand-mère aime cuisiner de bons plats traditionnels.", options: ["My grandmother likes to cook good traditional dishes.", "My grandmother likes to cook fast food.", "My grandmother likes to cook spicy dishes."], correct: "My grandmother likes to cook good traditional dishes." },
+        { question: "Je vais cuire un gâteau pour l'anniversaire.", options: ["I am going to bake a cake for the birthday.", "I am going to buy a cake for the birthday.", "I am going to eat a cake for the birthday."], correct: "I am going to bake a cake for the birthday." },
+        { question: "Le boucher va découper la viande en tranches.", options: ["The butcher is going to carve the meat into slices.", "The butcher is going to cook the meat whole.", "The butcher is going to freeze the meat."], correct: "The butcher is going to carve the meat into slices." },
+        { question: "J'aime déguster un bon vin avec mon repas.", options: ["I enjoy tasting a good wine with my meal.", "I enjoy tasting a good juice with my meal.", "I enjoy tasting a good soda with my meal."], correct: "I enjoy tasting a good wine with my meal." },
+        { question: "Il faut bien mâcher les aliments pour une bonne digestion.", options: ["You need to chew food well for good digestion.", "You need to swallow food whole for good digestion.", "You need to blend food for good digestion."], correct: "You need to chew food well for good digestion." },
+        { question: "J'ai bu de l'eau dans un verre en cristal.", options: ["I drank water in a crystal glass.", "I drank water in a plastic cup.", "I drank water in a metal mug."], correct: "I drank water in a crystal glass." },
+        { question: "Les graines de tournesol sont une collation saine.", options: ["Sunflower seeds are a healthy snack.", "Sunflower seeds are an unhealthy snack.", "Sunflower seeds are a spicy snack."], correct: "Sunflower seeds are a healthy snack." },
+        { question: "Les légumes sont une source importante de vitamines.", options: ["Vegetables are an important source of vitamins.", "Vegetables are not a source of vitamins.", "Vegetables are a source of minerals."], correct: "Vegetables are an important source of vitamins." },
+        { question: "La nourriture est excellente dans ce restaurant.", options: ["The food is excellent in this restaurant.", "The food is terrible in this restaurant.", "The food is average in this restaurant."], correct: "The food is excellent in this restaurant." },
+        { question: "Il est essentiel de bien manger pour rester en bonne santé.", options: ["It is essential to eat well to stay healthy.", "It is essential to eat poorly to stay healthy.", "It is essential to eat quickly to stay healthy."], correct: "It is essential to eat well to stay healthy." },
+        { question: "Je vais préparer une salade pour le déjeuner.", options: ["I am going to prepare a salad for lunch.", "I am going to prepare a pizza for lunch.", "I am going to prepare a burger for lunch."], correct: "I am going to prepare a salad for lunch." },
+        { question: "Elle va servir le dîner à sept heures.", options: ["She will serve dinner at seven o'clock.", "She will serve breakfast at seven o'clock.", "She will serve lunch at seven o'clock."], correct: "She will serve dinner at seven o'clock." },
+        { question: "J'ai acheté un kilo de pommes au marché.", options: ["I bought a kilogram of apples at the market.", "I bought a kilogram of bananas at the market.", "I bought a kilogram of oranges at the market."], correct: "I bought a kilogram of apples at the market." },
+
+
+];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            const questionElement = document.getElementById("question");
+            const optionsElement = document.getElementById("options");
+
+            questionElement.textContent = quizData[currentQuestion].question;
+            optionsElement.innerHTML = "";
+
+            quizData[currentQuestion].options.forEach((option, index) => {
+                const optionElement = document.createElement("div");
+                optionElement.classList.add("option");
+                optionElement.textContent = option;
+                optionElement.onclick = () => checkAnswer(option);
+                optionsElement.appendChild(optionElement);
+            });
+        }
+
+        function checkAnswer(selectedOption) {
+            const correctOption = quizData[currentQuestion].correct;
+            const resultElement = document.getElementById("result");
+
+            if (selectedOption === correctOption) {
+                resultElement.textContent = "Correct!";
+                score++;
+            } else {
+                resultElement.innerHTML = `<p style="color:red;">Incorrect. Correct answer: ${correctOption}</p>`;
+            }
+
+            disableOptions();
+        }
+
+        function disableOptions() {
+            const options = document.querySelectorAll(".option");
+            options.forEach(option => option.onclick = null);
+        }
+
+        function nextQuestion() {
+            const resultElement = document.getElementById("result");
+            resultElement.textContent = "";
+
+            if (currentQuestion < quizData.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                showFinalScore();
+            }
+        }
+
+        function showFinalScore() {
+            const questionElement = document.getElementById("question");
+            const optionsElement = document.getElementById("options");
+            const resultElement = document.getElementById("result");
+
+            questionElement.textContent = `Quiz completed! Your final score: ${score}/${quizData.length}`;
+            optionsElement.innerHTML = "";
+            resultElement.textContent = "";
+
+            // Hide the "Next Question" button after the quiz is completed
+            document.querySelector("button").style.display = "none";
+        }
+
+        // Initial load
+        loadQuestion();
+    </script>
+</body>
+</html>
