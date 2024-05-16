@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Vocab: Ou te sens-tu chez toi?</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Creepster&display=swap');
+        /* Styling for the button */
+        .big-button {
+            background-color: #6174b7;
+            box-shadow: 0px 4px 4px #0a194c;
+            color: white;
+            padding: 20px 40px;
+            font-size: 24px;
+            border: none;
+            cursor: pointer;
+            border-radius: 23px;
+
+        }
+
+        .big-button:hover {
+            background-color: rgb(173, 7, 7);
+            box-shadow: 0px 4px 4px darkred;
+        }
+
+        .center {
+            width: 147px;
+            position: fixed;
+            bottom: 10%;
+            left: 50%;
+            /* bring your own prefixes */
+            transform: translate(-50%, -50%);
+        }
+
+        #randomText {
+            font-size: 100px;
+            text-align: center;
+            font-family: sans-serif;
+            background: #ffffffaa;
+
+        }
+
+        #solution {
+            background-color: beige;
+            position: absolute;
+            bottom: 10%;
+            right: -10px;
+            min-width: 220px;
+            border: 2px solid #aeaeae;
+            padding: 30px;
+            -webkit-border-radius: 20px;
+            -webkit-border-bottom-right-radius: 0;
+            -moz-border-radius: 20px;
+            -moz-border-radius-bottomright: 0;
+            border-radius: 20px;
+            border-bottom-right-radius: 0;
+            display: none;
+        }
+
+        .flags {
+            font-size: 4em;
+        }
+
+        .flags span:first-child {
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: none;
+        }
+
+        .flags span:last-child {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: none;
+        }
+
+        .avatar {
+            position: absolute;
+            cursor: pointer;
+            right: 100px;
+            bottom: 14%;
+        }
+
+        .avatar img {
+            position: absolute;
+            width: 80px;
+        }
+
+        .avatar:hover :nth-child(2) {
+
+            display: none;
+        }
+
+        body {
+            background-image:  url("https://images.unsplash.com/photo-1501183638710-841dd1904471");
+            background-position: 50% 50%;
+            background-repeat: no-repeat, repeat;
+            background-size:cover;
+        }
+
+        .output {
+            text-align: center;
+            display: none;
+        }
+        .gifsbtn{
+            position: absolute;
+            left: 10px;
+            bottom: 10px;
+        }
+        .circle {
+            width: 50px;
+            height: 50px;
+            background-color: blue;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;background-clip: content-box;
+            font-family: Arial, sans-serif;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+
+<body>
+    <label class="switch switch-slide" style="font-family: Creepster; display: block; text-align: center;">
+        <input class="switch-input" type="checkbox" id="hardcore" />
+        <span class="switch-label" data-on="Yes" data-off="No"></span> 
+        <span class="hardcore">Hardcore mode</span>
+    </label>
+
+    <div class="center">
+        <button class="big-button" id="selectButton">click</button>
+    </div>
+    <p id="randomText"> - - - - - - </p>
+
+    <div class="flags">
+        <span id="flag-fr">🇫🇷</span>
+        <span id="flag-uk">🇬🇧</span>
+    </div>
+    <div class="avatar" id="response">
+        <img
+            src='https://avataaars.io/?avatarStyle=Circle&topType=ShortHairShortWaved&accessoriesType=Prescription02&hairColor=Auburn&facialHairType=BeardLight&facialHairColor=Auburn&clotheType=CollarSweater&clotheColor=Heather&eyeType=Squint&eyebrowType=RaisedExcited&mouthType=Sad&skinColor=Pale' />
+        <img
+            src='https://avataaars.io/?avatarStyle=Circle&topType=ShortHairShortWaved&accessoriesType=Prescription02&hairColor=Auburn&facialHairType=BeardLight&facialHairColor=Auburn&clotheType=CollarSweater&clotheColor=Heather&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Twinkle&skinColor=Light' />
+        <p id="solution"></p>
+    </div>
+    <div class="output" id="gifs"></div>
+    </div>
+    <button class="gifsbtn" onclick="myFunction()">GIFS</button>
+    <script>
+
+        // Array of your items
+let items = {
+    "le salon": "the living room",
+    "la porte": "the door",
+    "la maison": "the house",
+    "le bureau": "the office",
+    "la chaise": "the chair",
+    "le chalet": "the chalet",
+    "la salle de bain": "the bathroom",
+    "le bâtiment": "the building",
+    "le corridor": "the corridor",
+    "la commode": "the dresser",
+    "les escaliers": "the stairs",
+    "la lampe": "the lamp",
+    "le grenier": "the attic",
+    "l'affiche": "the poster",
+    "le château": "the castle",
+    "le garage": "the garage",
+    "le canapé": "the sofa",
+    "la cave": "the cellar",
+    "l'étagère": "the shelf",
+    "le jardin": "the garden",
+    "le fauteuil": "the armchair",
+    "le balcon": "the balcony",
+    "le meuble": "the furniture",
+    "le lit": "the bed",
+    "la terrasse": "the terrace",
+    "la télévision": "the television",
+    "la fenêtre": "the window",
+    "l'armoire": "the wardrobe",
+    "la chambre à coucher": "the bedroom",
+    "la cuisine": "the kitchen"
+};
+
+let itemsHardcore = {
+    "Dans le salon, il y a une grande télévision.": "In the living room, there is a big television.",
+    "La porte est en bois.": "The door is made of wood.",
+    "La maison est ancienne mais confortable.": "The house is old but comfortable.",
+    "Mon bureau est situé près de la fenêtre.": "My office is located near the window.",
+    "La chaise est rouge et confortable.": "The chair is red and comfortable.",
+    "Le chalet est situé dans les montagnes.": "The chalet is located in the mountains.",
+    "La salle de bain a une grande baignoire.": "The bathroom has a big bathtub.",
+    "Le bâtiment est moderne et spacieux.": "The building is modern and spacious.",
+    "Le corridor relie toutes les pièces de la maison.": "The corridor connects all the rooms in the house.",
+    "La commode est pleine de vêtements.": "The dresser is full of clothes.",
+    "Les escaliers mènent au deuxième étage.": "The stairs lead to the second floor.",
+    "La lampe éclaire bien la pièce.": "The lamp illuminates the room well.",
+    "Le grenier est utilisé comme espace de rangement.": "The attic is used as storage space.",
+    "L'affiche sur le mur est artistique.": "The poster on the wall is artistic.",
+    "Le château est entouré de jardins magnifiques.": "The castle is surrounded by beautiful gardens.",
+    "Le garage abrite deux voitures.": "The garage houses two cars.",
+    "Le canapé est confortable pour s'asseoir.": "The sofa is comfortable to sit on.",
+    "La cave est fraîche en été.": "The cellar is cool in the summer.",
+    "L'étagère contient des livres et des bibelots.": "The shelf contains books and knick-knacks.",
+    "Le jardin est rempli de fleurs colorées.": "The garden is filled with colorful flowers.",
+    "Le fauteuil est placé près de la fenêtre.": "The armchair is placed near the window.",
+    "Le balcon offre une belle vue sur la ville.": "The balcony offers a beautiful view of the city.",
+    "Le meuble est en bois massif.": "The furniture is made of solid wood.",
+    "Le lit est confortable pour dormir.": "The bed is comfortable for sleeping.",
+    "La terrasse est idéale pour se détendre en été.": "The terrace is perfect for relaxing in the summer.",
+    "La télévision est allumée dans le salon.": "The television is turned on in the living room.",
+    "La fenêtre donne sur le jardin.": "The window overlooks the garden.",
+    "L'armoire est utilisée pour ranger les vêtements.": "The wardrobe is used for storing clothes.",
+    "La chambre à coucher est décorée avec goût.": "The bedroom is tastefully decorated.",
+    "La cuisine est équipée d'appareils modernes.": "The kitchen is equipped with modern appliances."
+
+
+};
+
+        // console.log(Object.entries(items)[50])
+        // console.log(Object.keys(items).length)
+        let itemToDelete;
+
+        const textBox = document.getElementById("randomText");
+        const solution = document.getElementById("solution");
+        const flagFr = document.getElementById("flag-fr");
+        const flagUk = document.getElementById("flag-uk");
+        const avatar = document.getElementById("response");
+        const hardcore = document.querySelector('#hardcore');
+
+        let checkChange = hardcore.addEventListener("change", hardcoreLevel)
+
+        function hardcoreLevel(){
+            console.log(hardcore.checked);
+            if(hardcore.checked){
+                items = itemsHardcore
+                document.body.style.backgroundBlendMode = "difference";
+                document.body.style.backgroundColor = 'darkslateblue';
+            }else{
+                items = items
+                document.body.style.backgroundBlendMode = "normal";
+                document.body.style.backgroundColor = 'white';
+            }
+        }
+        hardcore
+        // Function to select and display a random item
+        function selectRandomItem() {
+            
+            console.log(Object.keys(items).length)
+            console.log(itemToDelete);
+            const randomIndex = Math.floor(Math.random() * Object.keys(items).length);
+            //console.log(randomIndex);
+            const randomLanguage = (Math.random() >= 0.5) ? 1 : 0;
+            randomLanguage == 0
+                ? (
+                    textBox.style.color = "blue",
+                    flagFr.style.display = "block",
+                    flagUk.style.display = "none"
+
+                ) : (
+                    textBox.style.color = "black",
+                    flagFr.style.display = "none",
+                    flagUk.style.display = "block"
+                );
+            const randomItem = Object.entries(items)[randomIndex][randomLanguage];
+            itemToDelete = Object.entries(items)[randomIndex];
+            //console.log(randomLanguage);
+
+            textBox.textContent = randomItem;
+            solution.textContent = Object.entries(items)[randomIndex][(randomLanguage == 0 ? 1 : 0)]
+            disableButton()
+            clearOutput()
+            getData(Object.entries(items)[randomIndex][randomLanguage == 0 ? 1 : 1])
+            delete items[itemToDelete[0]];
+        }
+        // Function to disable button
+        function disableButton() {
+            const btn = document.getElementById("selectButton");
+            btn.disabled = true;
+            btn.textContent = "wait";
+            btn.style.opacity = "0.2";
+            setTimeout(function () {
+                btn.disabled = false;
+                btn.textContent = "click";
+                btn.style.opacity = "1";
+
+            }, 500);
+            // setTimeout(function(){
+
+            // },3000)
+        }
+
+        function displaySolution() {
+            solution.style.display = "block";
+            setTimeout(function () {
+                solution.style.display = "none";
+            }, 3000)
+        }
+
+        // Add a click event listener to the button
+        document.getElementById("selectButton").addEventListener("click", selectRandomItem);
+        avatar.addEventListener("click", displaySolution);
+
+        //gyphy stuff
+
+        /*Get data from the API*/
+        function getData(input) {
+            var API_KEY = "aIFzHd5n7j7I4zPMQ6Ce8iNkYxsBlGqW";
+            var url =
+                "https://api.giphy.com/v1/gifs/search?api_key=" +
+                API_KEY +
+                "&q=" +
+                input +
+                "&limit=1&offset=0&rating=pg&lang=en&bundle=sticker_layering"; 
+            fetch(url)
+                .then((response) => response.json())
+                .then((data) => showData(data.data))
+                .catch((e) => {
+                    console.log(e);
+                });
+        }
+        /*Display the output*/
+        function showData(data) {
+            data.forEach((element) => {
+                var src = element.images.fixed_height.url;
+                var output = document.querySelector(".output");
+                output.innerHTML += "<img src=" + src + " >";
+            });
+        }
+        /*clearing the ouptut*/
+        function clearOutput() {
+            var output = document.querySelector(".output");
+            output.innerHTML = "";
+        }
+        function myFunction() {
+            var x = document.getElementById("gifs");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+        //circles score
+        let size = 50;
+
+        // function expandCircle(name, color) {
+        //     let circle = document.querySelector('.circle');
+        //     size += 10;
+        //     circle.style.width = size + 'px';
+        //     circle.style.height = size + 'px';
+        //     circle.style.borderRadius = size / 2 + 'px';
+        //     circle.style.backgroundColor = color;
+        //     circle.textContent = name;
+        // }
+
+        
+    </script>
+</body>
+
+</html>
